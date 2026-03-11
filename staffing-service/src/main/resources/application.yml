@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/enrichplus
+    username: enrich_user
+    password: enrich_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
