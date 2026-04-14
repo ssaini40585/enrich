@@ -88,7 +88,7 @@ Enrich+ handles this through three collaborating services:
 ├── demand-service/      # Demand APIs
 ├── staffing-service/    # Employee/candidate lifecycle + profile APIs
 ├── allocation-service/  # Allocation orchestration APIs
-├── docker-compose.yml   # Local PostgreSQL
+├── docker-compose.yml   # Local full stack (PostgreSQL + microservices)
 └── pom.xml              # Parent multi-module Maven build
 ```
 
@@ -252,30 +252,50 @@ Behavior:
 - Maven 3.8+
 - Docker + Docker Compose
 
-### Start database
+### Start full stack with Docker (Postgres + all microservices)
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-Verify DB container:
+Verify containers:
 
 ```bash
-docker ps | grep enrichplus-postgres
+docker compose ps
+```
+
+### If Docker run fails
+
+Use these commands to inspect build/runtime errors quickly:
+
+```bash
+docker compose build --no-cache
+docker compose up -d
+docker compose ps
+docker compose logs demand-service staffing-service allocation-service --tail=200
+```
+
+Typical causes:
+- Docker Desktop not running / Docker CLI unavailable.
+- Corporate proxy/network blocking Maven Central during image build.
+- Port conflict on `5432`, `8081`, `8082`, or `8083`.
+- Older Docker Compose versions can fail on advanced `depends_on` conditions; this repo uses compatible list-style `depends_on`.
+
+### Optional: run services from IDE/terminal instead of Docker
+
+If you prefer running services locally (without containers), start only Postgres from Docker and run each service with Maven:
+
+```bash
+docker compose up -d postgres
+mvn -pl demand-service spring-boot:run
+mvn -pl staffing-service spring-boot:run
+mvn -pl allocation-service spring-boot:run
 ```
 
 ### Build all modules
 
 ```bash
 mvn clean install
-```
-
-### Run services (separate terminals)
-
-```bash
-mvn -pl demand-service spring-boot:run
-mvn -pl staffing-service spring-boot:run
-mvn -pl allocation-service spring-boot:run
 ```
 
 ### Quick smoke run (sample)
@@ -438,3 +458,23 @@ mvn -pl allocation-service test
 - The new candidate profile APIs align with the enterprise Enrich platform behavior where candidates can either:
   - Upload CV details
   - Build resume inside the application
+
+---
+
+## 7) Postman assets
+
+A ready-to-import Postman setup has been added under `postman/`:
+
+- `postman/Enrich.postman_collection.json` - entity-wise API collection with folders for:
+  - `Employees` (staffing-service endpoints)
+  - `Demands` (demand-service endpoints)
+  - `Allocations` (allocation-service endpoint)
+- `postman/Enrich.local.postman_environment.json` - local environment (ports 8081/8082/8083)
+- `postman/Enrich.sample_data.json` - sample data payloads for quick testing and runner usage
+
+### Import order
+
+1. Import environment: `Enrich.local.postman_environment.json`
+2. Import collection: `Enrich.postman_collection.json`
+3. (Optional) Use `Enrich.sample_data.json` with Collection Runner / Newman.
+
