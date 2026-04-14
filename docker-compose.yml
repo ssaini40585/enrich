@@ -22,7 +22,8 @@ services:
       dockerfile: demand-service/Dockerfile
     container_name: enrichplus-demand-service
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       SERVER_PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/enrichplus
@@ -37,7 +38,8 @@ services:
       dockerfile: staffing-service/Dockerfile
     container_name: enrichplus-staffing-service
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       SERVER_PORT: 8082
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/enrichplus
@@ -52,9 +54,12 @@ services:
       dockerfile: allocation-service/Dockerfile
     container_name: enrichplus-allocation-service
     depends_on:
-      - postgres
-      - demand-service
-      - staffing-service
+      postgres:
+        condition: service_healthy
+      demand-service:
+        condition: service_started
+      staffing-service:
+        condition: service_started
     environment:
       SERVER_PORT: 8083
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/enrichplus
