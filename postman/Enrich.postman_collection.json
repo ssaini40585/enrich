@@ -1,0 +1,226 @@
+{
+  "info": {
+    "name": "Enrich+ Entity-wise API Collection",
+    "description": "Entity-first Postman collection for Enrich+ APIs. Requests are grouped by business entity so each endpoint can be tested independently or as end-to-end flows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "9f57e50f-4134-4f2c-a5bb-36f5f5f61a1b"
+  },
+  "item": [
+    {
+      "name": "Employees",
+      "description": "Endpoints related to employee lifecycle and profile enrichment.",
+      "item": [
+        {
+          "name": "Create Employee (Onboard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{name}}\",\n  \"email\": \"{{email}}\",\n  \"primarySkill\": \"{{primarySkill}}\"\n}"
+            },
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/onboard",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "onboard"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test('Employee ID returned', function () { pm.expect(body.id).to.exist; });",
+                  "if (body.id) pm.collectionVariables.set('employeeId', body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Employee Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/{{employeeId}}/profile",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "{{employeeId}}", "profile"]
+            }
+          }
+        },
+        {
+          "name": "List Available Employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/available?skill={{skill}}",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "available"],
+              "query": [
+                { "key": "skill", "value": "{{skill}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Employee Profile (CV Upload)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cvUrl\": \"{{cvUrl}}\",\n  \"primarySkill\": \"{{primarySkill}}\",\n  \"skillsCsv\": \"{{skillsCsv}}\",\n  \"yearsOfExperience\": {{yearsOfExperience}},\n  \"professionalSummary\": \"{{professionalSummary}}\"\n}"
+            },
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/{{employeeId}}/cv",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "{{employeeId}}", "cv"]
+            }
+          }
+        },
+        {
+          "name": "Update Employee Profile (Resume Builder)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"primarySkill\": \"{{primarySkill}}\",\n  \"skillsCsv\": \"{{skillsCsv}}\",\n  \"yearsOfExperience\": {{yearsOfExperience}},\n  \"professionalSummary\": \"{{professionalSummary}}\"\n}"
+            },
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/{{employeeId}}/resume-builder",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "{{employeeId}}", "resume-builder"]
+            }
+          }
+        },
+        {
+          "name": "Allocate Employee",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/{{employeeId}}/allocate",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "{{employeeId}}", "allocate"]
+            }
+          }
+        },
+        {
+          "name": "Offboard Employee",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{staffingBaseUrl}}/api/staffing/{{employeeId}}/offboard",
+              "host": ["{{staffingBaseUrl}}"],
+              "path": ["api", "staffing", "{{employeeId}}", "offboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demands",
+      "description": "Endpoints for demand creation and fulfillment tracking.",
+      "item": [
+        {
+          "name": "Create Demand",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectCode\": \"{{projectCode}}\",\n  \"requiredSkill\": \"{{requiredSkill}}\",\n  \"requestedCount\": {{requestedCount}}\n}"
+            },
+            "url": {
+              "raw": "{{demandBaseUrl}}/api/demands",
+              "host": ["{{demandBaseUrl}}"],
+              "path": ["api", "demands"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test('Demand ID returned', function () { pm.expect(body.id).to.exist; });",
+                  "if (body.id) pm.collectionVariables.set('demandId', body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Demands",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{demandBaseUrl}}/api/demands",
+              "host": ["{{demandBaseUrl}}"],
+              "path": ["api", "demands"]
+            }
+          }
+        },
+        {
+          "name": "Fulfill Demand Slot",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{demandBaseUrl}}/api/demands/{{demandId}}/fulfill",
+              "host": ["{{demandBaseUrl}}"],
+              "path": ["api", "demands", "{{demandId}}", "fulfill"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Allocations",
+      "description": "Endpoint for allocation orchestration run.",
+      "item": [
+        {
+          "name": "Run Allocation Cycle",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{allocationBaseUrl}}/api/allocations/run",
+              "host": ["{{allocationBaseUrl}}"],
+              "path": ["api", "allocations", "run"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "staffingBaseUrl", "value": "http://localhost:8082" },
+    { "key": "demandBaseUrl", "value": "http://localhost:8081" },
+    { "key": "allocationBaseUrl", "value": "http://localhost:8083" },
+    { "key": "employeeId", "value": "1" },
+    { "key": "demandId", "value": "1" },
+    { "key": "skill", "value": "Java" },
+    { "key": "name", "value": "Anika Rao" },
+    { "key": "email", "value": "anika@enrichplus.com" },
+    { "key": "primarySkill", "value": "Java" },
+    { "key": "skillsCsv", "value": "Java,Spring Boot,Kafka,PostgreSQL" },
+    { "key": "yearsOfExperience", "value": "5" },
+    { "key": "professionalSummary", "value": "Backend developer focused on scalable microservices." },
+    { "key": "cvUrl", "value": "https://blob.example.com/cv/anika-rao-v3.pdf" },
+    { "key": "projectCode", "value": "PRJ-DELTA" },
+    { "key": "requiredSkill", "value": "Java" },
+    { "key": "requestedCount", "value": "2" }
+  ]
+}
