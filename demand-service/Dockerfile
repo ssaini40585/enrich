@@ -1,6 +1,10 @@
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /build
-COPY . .
+COPY pom.xml ./
+COPY common/pom.xml common/pom.xml
+COPY demand-service/pom.xml demand-service/pom.xml
+COPY common/src common/src
+COPY demand-service/src demand-service/src
 RUN mvn -pl demand-service -am clean package -DskipTests
 
 FROM eclipse-temurin:17-jre

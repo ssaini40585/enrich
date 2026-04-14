@@ -264,23 +264,6 @@ Verify containers:
 docker compose ps
 ```
 
-### If Docker run fails
-
-Use these commands to inspect build/runtime errors quickly:
-
-```bash
-docker compose build --no-cache
-docker compose up -d
-docker compose ps
-docker compose logs demand-service staffing-service allocation-service --tail=200
-```
-
-Typical causes:
-- Docker Desktop not running / Docker CLI unavailable.
-- Corporate proxy/network blocking Maven Central during image build.
-- Port conflict on `5432`, `8081`, `8082`, or `8083`.
-- Older Docker Compose versions can fail on advanced `depends_on` conditions; this repo uses compatible list-style `depends_on`.
-
 ### Optional: run services from IDE/terminal instead of Docker
 
 If you prefer running services locally (without containers), start only Postgres from Docker and run each service with Maven:
@@ -461,7 +444,7 @@ mvn -pl allocation-service test
 
 ---
 
-## 14) Postman assets
+## 7) Postman assets
 
 A ready-to-import Postman setup has been added under `postman/`:
 
