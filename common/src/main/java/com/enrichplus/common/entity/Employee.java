@@ -27,6 +27,21 @@ public class Employee {
     @Column(nullable = false)
     private String status;
 
+    @Column
+    private String skillsCsv;
+
+    @Column
+    private Integer yearsOfExperience;
+
+    @Column(length = 2000)
+    private String professionalSummary;
+
+    @Column
+    private String cvUrl;
+
+    @Column
+    private String profileSource;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +80,45 @@ public class Employee {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSkillsCsv() {
+        return skillsCsv;
+    }
+
+    public void setSkillsCsv(String skillsCsv) {
+        this.skillsCsv = skillsCsv;
+    }
+
+    public Integer getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(Integer yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public String getProfessionalSummary() {
+        return professionalSummary;
+    }
+
+    public void setProfessionalSummary(String professionalSummary) {
+        this.professionalSummary = professionalSummary;
+    }
+
+    public String getCvUrl() {
+        return cvUrl;
+    }
+
+    public void setCvUrl(String cvUrl) {
+        this.cvUrl = cvUrl;
+    }
+
+    public String getProfileSource() {
+        return profileSource;
+    }
+
+    public void setProfileSource(String profileSource) {
+        this.profileSource = profileSource;
     }
 }
