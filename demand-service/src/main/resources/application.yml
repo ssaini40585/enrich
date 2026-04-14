@@ -1,11 +1,11 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/enrichplus
-    username: enrich_user
-    password: enrich_pass
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/enrichplus}
+    username: ${SPRING_DATASOURCE_USERNAME:enrich_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:enrich_pass}
   jpa:
     hibernate:
       ddl-auto: update
