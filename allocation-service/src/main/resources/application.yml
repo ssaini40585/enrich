@@ -1,16 +1,16 @@
 server:
-  port: 8083
+  port: ${SERVER_PORT:8083}
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/enrichplus
-    username: enrich_user
-    password: enrich_pass
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/enrichplus}
+    username: ${SPRING_DATASOURCE_USERNAME:enrich_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:enrich_pass}
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: false
 
 clients:
-  demand-service-url: http://localhost:8081
-  staffing-service-url: http://localhost:8082
+  demand-service-url: ${CLIENTS_DEMAND_SERVICE_URL:http://localhost:8081}
+  staffing-service-url: ${CLIENTS_STAFFING_SERVICE_URL:http://localhost:8082}

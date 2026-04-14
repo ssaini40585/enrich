@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Anika Rao",
+    "email": "anika@enrichplus.com",
+    "primarySkill": "Java",
+    "skillsCsv": "Java,Spring Boot,Kafka,PostgreSQL",
+    "yearsOfExperience": 5,
+    "professionalSummary": "Backend developer focused on scalable microservices.",
+    "cvUrl": "https://blob.example.com/cv/anika-rao-v3.pdf",
+    "projectCode": "PRJ-DELTA",
+    "requiredSkill": "Java",
+    "requestedCount": 2
+  },
+  {
+    "name": "Ravi Menon",
+    "email": "ravi@enrichplus.com",
+    "primarySkill": "Python",
+    "skillsCsv": "Python,FastAPI,PostgreSQL,Docker",
+    "yearsOfExperience": 4,
+    "professionalSummary": "API engineer with cloud deployment experience.",
+    "cvUrl": "https://blob.example.com/cv/ravi-menon-v2.pdf",
+    "projectCode": "PRJ-SIGMA",
+    "requiredSkill": "Python",
+    "requestedCount": 1
+  }
+]
